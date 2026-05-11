@@ -1,3 +1,7 @@
+<?php 
+         require_once __DIR__."/../../model/clientModel.php";
+    //  require_once ("../model/clientModel.php");
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -56,22 +60,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Exemple d'une ligne client -->
+                            <?php $clients = listerClient(); ?>
+                            <?php foreach($clients as $c):?>
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="px-5 py-5 border-b border-gray-200 text-sm">1</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $c["id_client"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-gray-900">Moussa Diallo</span>
-                                        <span class="text-gray-500 italic">moussa.diallo@email.com</span>
+                                        <span class="font-bold text-gray-900"><?= $c["prenom"]  . ' ' . $c["nom"]?></span>
+                                        <span class="text-gray-500 italic"><?= $c["email"] ?></span>
                                     </div>
                                 </td> 
-                                <td class="px-5 py-5 border-b border-gray-200 text-sm">771234567</td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-sm">Plateau, Dakar</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $c["telephone"] ?></td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $c["adresse"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                     <button class="text-blue-600 hover:text-blue-900 mr-3">Modifier</button>
                                     <button class="text-red-600 hover:text-red-900">Supprimer</button>
                                 </td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
