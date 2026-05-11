@@ -7,3 +7,19 @@ function listerClient(){
     return $stm->fetchAll(PDO::FETCH_ASSOC);
        
 }
+
+
+function ajoutClient($nom, $prenom, $telephone, $email, $adresse)
+{
+    $pdo = getPDO();
+    $sql = "INSERT INTO client(nom,prenom,telephone,email,adresse)
+            VALUES (:nom,:prenom,:telephone,:email,:adresse)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'nom' => $nom,
+        'prenom' => $prenom,
+        'telephone' => $telephone,
+        'email' => $email,
+        'adresse' => $adresse
+    ]);
+}
