@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . "/../config/config.php";
 
-function deleteClient($id){
+function deleteClient($id)
+{
     $pdo = getPDO();
 
     $sql = "DELETE FROM client WHERE id_client = :id";
@@ -17,8 +18,16 @@ function deleteClient($id){
 
 $result = deleteClient(1);
 
-if($result > 0){
+if ($result > 0) {
     echo "Client supprimé";
-}else{
+} else {
     echo "Client introuvable";
+}
+
+function listerClient()
+{
+    $pdo = getPDO();
+    $sql = "SELECT * FROM `client`";
+    $stm = $pdo->query($pdo);
+    return $stm->fetchAll(PDO::FETCH_ASSOC);
 }
