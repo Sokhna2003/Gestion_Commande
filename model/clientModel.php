@@ -24,5 +24,55 @@ function ajoutClient($nom, $prenom, $telephone, $email, $adresse)
     ]);
 }
 
+function deleteClient($id)
+{
+    $pdo = getPDO();
+
+    $sql = "DELETE FROM client WHERE id_client = :id";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id
+    ]);
+}
 
 
+function updateClient($id, $nom, $prenom, $telephone, $email, $adresse)
+{
+    $pdo = getPDO();
+
+    $sql = "UPDATE client 
+            SET nom = :nom,
+                prenom = :prenom,
+                telephone = :telephone,
+                email = :email,
+                adresse = :adresse
+            WHERE id_client = :id";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id,
+        'nom' => $nom,
+        'prenom' => $prenom,
+        'telephone' => $telephone,
+        'email' => $email,
+        'adresse' => $adresse
+    ]);
+}
+
+function getClientById($id)
+{
+    $pdo = getPDO();
+
+    $sql = "SELECT * FROM client WHERE id_client = :id";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id
+    ]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
