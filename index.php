@@ -1,5 +1,8 @@
 <?php 
      define("WEBROOT","http://localhost:8000/");
+     var_dump($_SERVER["DOCUMENT_ROOT"]);
+     die;
+     define("ROOT",$_SERVER["DOCUMENT_ROOT"]);
 
      require_once __DIR__."/controller/clientController.php";
      require_once __DIR__."/controller/produitController.php";
