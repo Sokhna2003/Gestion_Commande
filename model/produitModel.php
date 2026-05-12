@@ -7,9 +7,3 @@ function listerProduit(){
     return $stm->fetchAll(PDO::FETCH_ASSOC);
        
 }
-
-
-
-
-
-
