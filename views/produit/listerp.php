@@ -47,7 +47,7 @@
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Prix</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Stock</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
-                            </tr>
+                            </tr> 
                         </thead>
                         <tbody>
                             <?php foreach($produits as $p):?>
