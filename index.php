@@ -2,6 +2,7 @@
      define("WEBROOT","http://localhost:8000/");
 
      require_once __DIR__."/controller/clientController.php";
+     require_once __DIR__."/controller/produitController.php";
 
      
 $page = $_GET['page'] ?? 'lister';
@@ -17,6 +18,9 @@ elseif ($page == "ajout") {
     newClient();
 }elseif($page == "update"){
      modifierClient();
+}elseif($page == "listerp"){
+     $produits = listerProduit();
+     require_once __DIR__."/views/produit/listerp.php";
 }
      
 // require_once __DIR__."/views/client/ajout.php";
