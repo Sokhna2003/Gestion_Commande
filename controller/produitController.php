@@ -23,3 +23,5 @@ function newProduit()
 
     require_once __DIR__ . '/../views/produit/ajout.php';
 }
+require_once __DIR__."/../model/produitModel.php";
+
