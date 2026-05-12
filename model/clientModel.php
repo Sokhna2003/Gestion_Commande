@@ -23,3 +23,18 @@ function ajoutClient($nom, $prenom, $telephone, $email, $adresse)
         'adresse' => $adresse
     ]);
 }
+
+function deleteClient($id)
+{
+    $pdo = getPDO();
+
+    $sql = "DELETE FROM client WHERE id_client = :id";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id
+    ]);
+}
+
+

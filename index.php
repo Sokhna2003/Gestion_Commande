@@ -1,12 +1,23 @@
 <?php 
+     define("WEBROOT","http://localhost:8000/");
 
-     //echo "je te vous";
-     //require_once __DIR__."/controller/clientController.php";
-     //require_once __DIR__ . "/views/client/ajout.php";
-     //newClient();
-     echo "je te j jk fj jf jf ";
      require_once __DIR__."/controller/clientController.php";
-     newClient();
+
+     
+$page = $_GET['page'] ?? 'lister';
+
+if ($page == "delete") {
+    supprimerCLient();
+}
+elseif ($page == "lister") {
+    $clients = listerClient();
+    require_once __DIR__."/views/client/lister.php";
+}
+elseif ($page == "ajout") {
+    newClient();
+}
+
+     
 // require_once __DIR__."/views/client/ajout.php";
 
 ?>
