@@ -8,7 +8,20 @@ function listerProduit(){
        
 }
 
-
+function ajoutProduit($libelle, $prix, $stock, $description)
+{
+    $pdo = getPDO();
+    $sql = "INSERT INTO produit(libelle,prix,stock,description)
+            VALUES (:libelle,:prix,:stock,:description)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'libelle' => $libelle,
+        'prix' => $prix,
+        'stock' => $stock,
+        'description' => $description,
+       
+    ]);
+}
 
 
 

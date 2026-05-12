@@ -2,6 +2,7 @@
      define("WEBROOT","http://localhost:8000/");
 
      require_once __DIR__."/controller/clientController.php";
+     require_once __DIR__."/controller/produitController.php";
 
      
 $page = $_GET['page'] ?? 'lister';
