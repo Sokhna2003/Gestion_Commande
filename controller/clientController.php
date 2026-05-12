@@ -39,6 +39,7 @@ function newClient()
              ajoutClient($nom, $prenom, $telephone, $email, $adresse);
             // return [$error, $success];
             header('Location: ajout.php');
+            exit();
         // }
     }
     require_once __DIR__ . '/../views/client/ajout.php';

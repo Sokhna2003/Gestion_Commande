@@ -23,3 +23,6 @@ function ajoutClient($nom, $prenom, $telephone, $email, $adresse)
         'adresse' => $adresse
     ]);
 }
+
+
+
