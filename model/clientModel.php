@@ -38,3 +38,27 @@ function deleteClient($id)
 }
 
 
+function updateClient($id, $nom, $prenom, $telephone, $email, $adresse)
+{
+    $pdo = getPDO();
+
+    $sql = "UPDATE client 
+            SET nom = :nom,
+                prenom = :prenom,
+                telephone = :telephone,
+                email = :email,
+                adresse = :adresse
+            WHERE id_client = :id";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id,
+        'nom' => $nom,
+        'prenom' => $prenom,
+        'telephone' => $telephone,
+        'email' => $email,
+        'adresse' => $adresse
+    ]);
+}
+
