@@ -62,3 +62,17 @@ function updateClient($id, $nom, $prenom, $telephone, $email, $adresse)
     ]);
 }
 
+function getClientById($id)
+{
+    $pdo = getPDO();
+
+    $sql = "SELECT * FROM client WHERE id_client = :id";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id
+    ]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}

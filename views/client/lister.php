@@ -74,7 +74,11 @@
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $c["telephone"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $c["adresse"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                    <button class="text-blue-600 hover:text-blue-900 mr-3">Modifier</button>
+                                    <a href="?page=update&id=<?= $c['id_client'] ?>">
+    <button class="text-blue-600 hover:text-blue-900 mr-3">
+        Modifier
+    </button>
+</a>
                                     <a href="?page=delete&delete=<?= $c['id_client'] ?>"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
                                 </td>
                             </tr>

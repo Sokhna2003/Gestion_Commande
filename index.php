@@ -15,8 +15,9 @@ elseif ($page == "lister") {
 }
 elseif ($page == "ajout") {
     newClient();
+}elseif($page == "update"){
+     modifierClient();
 }
-
      
 // require_once __DIR__."/views/client/ajout.php";
 

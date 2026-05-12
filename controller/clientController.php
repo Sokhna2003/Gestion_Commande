@@ -76,6 +76,6 @@ function modifierClient()
             exit();
         }
 
-        require_once __DIR__."/../views/client/update.php";
+        require_once __DIR__."/../views/client/ajout.php";
     }
 }
