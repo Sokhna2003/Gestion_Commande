@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__."/../model/clientModel.php";
+
 function newClient()
 {
-
     if (isset($_POST['add-client'])) {
+
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
         $email = $_POST['email'];
@@ -36,11 +37,20 @@ function newClient()
         //     $error['cls'] = 'Classe invalide';
         // }
         // if (empty($error)) {
-             ajoutClient($nom, $prenom, $telephone, $email, $adresse);
+            ajoutClient($nom, $prenom, $telephone, $email, $adresse);
             // return [$error, $success];
-            header('Location: ajout.php');
+            header("Location:".WEBROOT."?page=lister");
             exit();
         // }
     }
+
     require_once __DIR__ . '/../views/client/ajout.php';
+}
+
+function supprimerCLient(){
+    if(isset($_GET['delete'])){
+        $id = intval($_GET['delete']);
+        deleteClient($id);
+        header("Location:".WEBROOT."?page=lister");
+    }
 }
