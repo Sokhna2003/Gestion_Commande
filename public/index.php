@@ -1,11 +1,13 @@
 <?php 
      define("WEBROOT","http://localhost:8000/");
      //var_dump([$_SERVER["DOCUMENT_ROOT"],substr($_SERVER["DOCUMENT_ROOT"],0,-6)]);
-     die;
+     //die;
      define("ROOT",substr($_SERVER["DOCUMENT_ROOT"],0,-6));
 
-     require_once __DIR__."/controller/clientController.php";
-     require_once __DIR__."/controller/produitController.php";
+     //define("ROOT", substr($_SERVER["DOCUMENT_ROOT"], 0, -6));
+
+        require_once ROOT . "/controller/produitController.php";
+        require_once ROOT . "/controller/clientController.php";
 
      
 $page = $_GET['page'] ?? 'lister';
@@ -15,7 +17,8 @@ if ($page == "delete") {
 }
 elseif ($page == "lister") {
     $clients = listerClient();
-    require_once __DIR__."/views/client/lister.php";
+    require_once ROOT . "/views/client/lister.php";
+
 }
 elseif ($page == "ajout") {
     newClient();
@@ -23,7 +26,7 @@ elseif ($page == "ajout") {
      modifierClient();
 }elseif($page == "listerp"){
      $produits = listerProduit();
-     require_once __DIR__."/views/produit/listerp.php";
+    require_once ROOT . "/views/produit/listerp.php";
 }
      
 // require_once __DIR__."/views/client/ajout.php";
