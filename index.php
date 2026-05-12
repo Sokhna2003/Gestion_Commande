@@ -18,6 +18,11 @@ elseif ($page == "ajout") {
     newClient();
 }elseif($page == "update"){
      modifierClient();
+}elseif($page == "newProduit"){
+    newProduit();
+}elseif($page == "listerProduit"){
+    $produits = listerProduit();
+    require_once __DIR__."/views/produit/lister.php";
 }
      
 // require_once __DIR__."/views/client/ajout.php";

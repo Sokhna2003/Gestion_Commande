@@ -9,10 +9,14 @@ function newProduit()
         $prix = $_POST['prix'];
         $stock = $_POST['stock'];
         $description = $_POST['description'];
-
-                 ajoutProduit($libelle, $prix, $stock, $description);
+        echo "jgjgjgj";
+        
+        
+        ajoutProduit($libelle, $prix, $stock, $description);
+        echo "enregistrer";
             // return [$error, $success];
-            header("Location:".WEBROOT."?page=lister");
+            // die();
+            header("Location:".WEBROOT."?page=listerProduit");
             exit();
         // }
     }
