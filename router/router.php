@@ -7,10 +7,18 @@ $controllers = [
 
 $controller = $_REQUEST['controller'] ?? "client";
 
-if (array_key_exists($controller,$controllers)){
+// Rendre $controller disponible globalement
+//global $controller;
+
+if (array_key_exists($controller, $controllers)){
     $path = ROOT."controller/".$controllers[$controller]."Controller.php";
-}else{
+    
+    if (file_exists($path)) {
+        require_once($path);
+    } else {
+        echo "Fichier controller introuvable : " . $path;
+    }
+} else {
     echo "controller introuvable";
 }
-
-require_once($path);
+?>
