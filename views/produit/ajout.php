@@ -54,7 +54,6 @@
             <label class="block text-sm font-medium text-gray-700">
                 stock
             </label>
-
             <input
                 type="text"
                 name="stock"
@@ -71,7 +70,6 @@
             </label>
 
             <input
-            
                 type="text"
                 name="description"
                 required
