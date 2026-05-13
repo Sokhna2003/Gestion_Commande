@@ -84,14 +84,8 @@ function modifierProduit()
             
             header("Location: " . WEBROOT . "?controller=produit&action=lister");
             exit();
-        }
-        
-        $vuePath = ROOT . "views/produit/ajout.php";
-        if (file_exists($vuePath)) {
-            require_once $vuePath;
-        } else {
-            echo "Vue introuvable : " . $vuePath;
-        }
+        // }
     }
+
+    require_once __DIR__ . '/../views/produit/ajout.php';
 }
-?>

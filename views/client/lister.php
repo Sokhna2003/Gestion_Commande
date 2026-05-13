@@ -17,22 +17,10 @@
     <title>Gestion Group Commandes</title>
 </head>
 <body class="bg-gray-100 font-sans">
+    
 
-    <div class="flex h-screen">
-        <!-- SIDEBAR -->
-        <aside class="w-64 bg-indigo-900 text-white flex flex-col">
-            <div class="p-6 text-2xl font-bold border-b border-indigo-800">
-                Admin Panel
-            </div>
-            <nav class="flex-1 p-4 space-y-2">
-                <a href="#" class="block py-2.5 px-4 rounded bg-indigo-700 transition">Clients</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Produits</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Commandes</a>
-            </nav>
-            <div class="p-4 border-t border-indigo-800 text-sm text-indigo-300">
-                © 2024 Group Commandes
-            </div>
-        </aside>
+    <?php require_once __DIR__."/../fixe/header.php" ?>
+
 
         <!-- MAIN CONTENT -->
         <div class="flex-1 flex flex-col overflow-hidden">
