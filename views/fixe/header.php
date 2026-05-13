@@ -21,9 +21,9 @@
                 Admin Panel
             </div>
             <nav class="flex-1 p-4 space-y-2">
-                <a href="?page=lister" class="block py-2.5 px-4 rounded bg-indigo-700 transition">Clients</a>
-                <a href="?page=listerp" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Produits</a>
-                <a href="?page=listercom" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Commandes</a>
+                <a href="<?= WEBROOT ?>?controller=client&action=lister" class="block py-2.5 px-4 rounded bg-indigo-700 transition">Clients</a>
+                <a href="<?= WEBROOT ?>?controller=produit&action=listerp" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Produits</a>
+                <a href="<?= WEBROOT ?>?controller=commande&action=lister" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Commandes</a>
             </nav>
             <div class="p-4 border-t border-indigo-800 text-sm text-indigo-300">
                 © 2024 Group Commandes

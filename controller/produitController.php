@@ -89,3 +89,4 @@ function modifierProduit()
 
     require_once __DIR__ . '/../views/produit/ajout.php';
 }
+}

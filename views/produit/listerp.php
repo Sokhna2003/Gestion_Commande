@@ -2,6 +2,7 @@
         //  require_once __DIR__."/../../model/produitModel.php";
     //  require_once ("../model/clientModel.php");
 ?>
+<!--
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,7 +18,7 @@
     <title>Gestion Group Commandes</title>
 </head>
 <body class="bg-gray-100 font-sans">
-    
+-->
 
     <?php require_once __DIR__."/../fixe/header.php" ?>
 
