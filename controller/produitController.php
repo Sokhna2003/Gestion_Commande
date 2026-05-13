@@ -59,11 +59,15 @@ function newProduit()
 }
 
 function supprimerProduit(){
-    if(isset($_GET['delete'])){
-        $id = intval($_GET['delete']);
+    if(isset($_GET['id'])){
+        $id = intval($_GET['id']);
         deleteProduit($id);
         header("Location: " . WEBROOT . "?controller=produit&action=lister");
         exit();
+    } else {
+        // Debug si le paramètre n'est pas trouvé
+        echo "Aucun ID de suppression reçu. GET reçu : ";
+        print_r($_GET);
     }
 }
 

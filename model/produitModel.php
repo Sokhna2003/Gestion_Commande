@@ -8,25 +8,11 @@ function listerProduit(){
        
 }
 
-function ajoutProduit($libelle, $prix, $stock, $description)
-{
-    $pdo = getPDO();
-    $sql = "INSERT INTO produit(libelle,prix,stock,description)
-            VALUES (:libelle,:prix,:stock,:description)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'libelle' => $libelle,
-        'prix' => $prix,
-        'stock' => $stock,
-        'description' => $description,
-       
-    ]);
-}
 function ajoutProduit($libelle, $description, $prix, $stock)
 {
     $pdo = getPDO();
-    $sql = "INSERT INTO client(libelle, description, prix,stock)
-            VALUES (:libelle, :description, :prix,:stock)";
+    $sql = "INSERT INTO produit(libelle, description, prix,stock)
+            VALUES (:libelle,:description,:prix,:stock)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         'libelle' => $libelle,
@@ -58,7 +44,7 @@ function updateProduit($id,$libelle, $description, $prix, $stock)
             SET libelle = :libelle,
                 description = :description,
                 prix = :prix,
-                stock = :stock,
+                stock = :stock
             WHERE id_produit = :id";
 
     $stmt = $pdo->prepare($sql);
