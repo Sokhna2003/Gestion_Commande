@@ -29,7 +29,7 @@
             <header class="flex items-center justify-between px-6 py-4 bg-white border-b">
                 <h1 class="text-xl font-semibold text-gray-800">Liste des Potduits</h1>
                 <div class="flex items-center">
-                    <a href="?page=ajout">
+                    <a href="<?= WEBROOT ?>?controller=produit&action=new">
                     <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">
                         + Nouveau Produit
                     </button>
@@ -63,12 +63,12 @@
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $p["prix"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $p["stock"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                    <a href="#">
+                                    <a href="<?= WEBROOT ?>?controller=produit&action=modifier&id=<?= $p['id_produit'] ?>">
     <button class="text-blue-600 hover:text-blue-900 mr-3">
         Modifier
     </button>
 </a>
-                                    <a href="#"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
+                                    <a href="<?= WEBROOT ?>?controller=produit&action=supprimer&id=<?= $p['id_produit'] ?>"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
