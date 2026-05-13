@@ -26,9 +26,8 @@ if (array_key_exists($action, $actions)) {
 
 // Actions
 function listeProduit(){
-    $produits = listerProduit();
-    // Utiliser ROOT au lieu de __DIR__
-    $vuePath = ROOT . "views/produit/lister.php";
+    $produits = listerProduit(); // Récupérer les produits
+    $vuePath = ROOT . "views/produit/listerp.php";
     
     if (file_exists($vuePath)) {
         require_once $vuePath;
@@ -41,11 +40,11 @@ function newProduit()
 {
     if (isset($_POST['add-produit'])) {
         $libelle = $_POST['libelle'];
+        $description = $_POST['description'];
         $prix = $_POST['prix'];
         $stock = $_POST['stock'];
-        $description = $_POST['description'];
         
-        ajoutProduit($libelle, $prix, $stock, $description);
+        ajoutProduit($libelle, $description, $prix, $stock);
         
         header("Location: " . WEBROOT . "?controller=produit&action=lister");
         exit();
@@ -70,23 +69,37 @@ function supprimerProduit(){
 
 function modifierProduit()
 {
-    if(isset($_GET['id'])){
-        $id = (int) $_GET['id'];
-        $client = getProduitById($id);
+    // Récupérer l'ID depuis GET
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_GET['update']) ? (int) $_GET['update'] : 0);
+    
+    if($id > 0){
+        $produit = getProduitById($id);
+        
+        // Vérifier si le produit existe
+        if(!$produit) {
+            die("Produit non trouvé avec l'ID : " . $id);
+        }
         
         if(isset($_POST['update-produit'])){
             $libelle = $_POST['libelle'];
+            $description = $_POST['description'];
             $prix = $_POST['prix'];
             $stock = $_POST['stock'];
-            $description = $_POST['description'];
             
-            updateProduit($id, $libelle, $prix, $stock, $description);
+            updateProduit($id, $libelle, $description, $prix, $stock);
             
             header("Location: " . WEBROOT . "?controller=produit&action=lister");
             exit();
-        // }
+        }
+        
+        $vuePath = ROOT . "views/produit/ajout.php";
+        if (file_exists($vuePath)) {
+            require_once $vuePath;
+        } else {
+            echo "Vue introuvable : " . $vuePath;
+        }
+    } else {
+        echo "ID produit non valide";
     }
-
-    require_once __DIR__ . '/../views/produit/ajout.php';
 }
-}
+?>
