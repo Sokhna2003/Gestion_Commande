@@ -5,7 +5,7 @@
             <header class="flex items-center justify-between px-6 py-4 bg-white border-b">
                 <h1 class="text-xl font-semibold text-gray-800">Liste des Commandes</h1>
                 <div class="flex items-center">
-                    <a href="<?= WEBROOT ?>?controller=client&action=new">
+                    <a href="<?= WEBROOT ?>?controller=commande&action=new">
                     <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">
                         + Nouveau Commande
                     </button>
