@@ -1,27 +1,3 @@
-<?php 
-        //  require_once __DIR__."/../../model/produitModel.php";
-    //  require_once ("../model/clientModel.php");
-?>
-<!--
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-      @theme {
-        --color-clifford: #da373d;
-      }
-    </style>
-    <title>Gestion Group Commandes</title>
-</head>
-<body class="bg-gray-100 font-sans">
--->
-
-    <?php require_once __DIR__."/../fixe/header.php" ?>
-
 
         <!-- MAIN CONTENT -->
         <div class="flex-1 flex flex-col overflow-hidden">
@@ -64,20 +40,17 @@
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $p["stock"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                     <a href="<?= WEBROOT ?>?controller=produit&action=modifier&id=<?= $p['id_produit'] ?>">
-    <button class="text-blue-600 hover:text-blue-900 mr-3">
-        Modifier
-    </button>
-</a>
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3">
+                                            Modifier
+                                        </button>
+                                    </a>
                                     <a href="<?= WEBROOT ?>?controller=produit&action=supprimer&id=<?= $p['id_produit'] ?>"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
                                 </td>
-                            </tr>
-                            <?php endforeach; ?>
+                                </tr>
+                                <?php endforeach; ?>
                         </tbody>
-                    </table>
-                </div>
+                        </table>
+                    </div>
             </main>
-        </div>
     </div>
 
-</body>
-</html>
