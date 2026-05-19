@@ -19,7 +19,6 @@
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr class="bg-gray-50 border-b border-gray-200">
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">DESCRIPTION</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">DATE_COMMANDE</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">MONTANT_TOTAL</th>
@@ -30,7 +29,6 @@
                         <tbody>
                             <?php foreach($commandes as $commande):?>
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $commande["id_commande"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $commande["description"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $commande["date_commande"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $commande["montant_total"] ?></td>
