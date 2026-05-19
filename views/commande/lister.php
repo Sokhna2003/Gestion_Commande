@@ -1,5 +1,4 @@
-
-        <!-- MAIN CONTENT -->
+<!-- MAIN CONTENT -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- HEADER -->
             <header class="flex items-center justify-between px-6 py-4 bg-white border-b">

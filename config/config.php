@@ -3,7 +3,7 @@ function getPDO(){
     try{
         return new PDO(
             "mysql:host=127.0.0.1;
-            dbname=group_commandes;
+            dbname=gestion_commande;
             charset=utf8;
             port=3306",
             "root",
