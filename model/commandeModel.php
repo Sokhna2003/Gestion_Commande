@@ -1,5 +1,5 @@
 <?php
-    require_once (ROOT."/config/config.php");
+require_once(ROOT."/config/config.php");
 
 function getAllCommandes(){
     $sql = "SELECT c.*, cl.nom, cl.prenom 
@@ -17,29 +17,48 @@ function getCommandeById($id){
     return executeSelect($sql, ["id"=>$id], true);
 }
 
-function getCommandesByClient($clientId){
-    $sql = "SELECT * FROM commande WHERE id_client = :id ORDER BY date_commande DESC";
-    return executeSelect($sql, ["id"=>$clientId]);
+function getClientByTelephone($telephone){
+    $sql = "SELECT * FROM client WHERE telephone = :telephone";
+    return executeSelect($sql, ["telephone"=>$telephone], true);
 }
 
-function countCommandes(){
-    return countTable("commande");
+function getProduitByReference($reference){
+    $sql = "SELECT * FROM produit WHERE reference = :reference";
+    return executeSelect($sql, ["reference"=>$reference], true);
 }
 
-function countCommandesByStatus($statut){
-    $sql = "SELECT COUNT(*) as total FROM commande WHERE statut = :statut";
-    return executeSelect($sql, ["statut"=>$statut], true)["total"];
+function addCommande($id_client, $montant_total, $description, array $panier){
+    $pdo = getPDO();
+
+    // 1. Insérer la commande
+    $sql = "INSERT INTO commande (id_client, date_commande, montant_total, statut, description) 
+            VALUES (:id_client, CURDATE(), :montant_total, 'NONSOLDE', :description)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        "id_client"     => $id_client,
+        "montant_total" => $montant_total,
+        "description"   => $description
+    ]);
+
+    $id_commande = $pdo->lastInsertId();
+
+    // 2. Insérer chaque ligne + décrémenter le stock
+    foreach($panier as $item){
+        $sqlLigne = "INSERT INTO produit_commande (id_commande, id_produit, quantite, prix_vente) 
+                     VALUES (:id_commande, :id_produit, :quantite, :prix_vente)";
+        $stmt = $pdo->prepare($sqlLigne);
+        $stmt->execute([
+            "id_commande" => $id_commande,
+            "id_produit"  => $item["id_produit"],
+            "quantite"    => $item["quantite"],
+            "prix_vente"  => $item["prix"]
+        ]);
+
+        $sqlStock = "UPDATE produit SET stock = stock - :quantite WHERE id_produit = :id_produit";
+        $stmt = $pdo->prepare($sqlStock);
+        $stmt->execute([
+            "quantite"   => $item["quantite"],
+            "id_produit" => $item["id_produit"]
+        ]);
+    }
 }
-
-
-// function addCommande($id_client, $date_commande, $montant_total, $statut, $description){
-//     $sql = "INSERT INTO commande (id_client, date_commande, montant_total, statut, description) 
-//             VALUES (:id_client, :date_commande, :montant_total, :statut, :description)";
-//     return executeUpdate($sql, [
-//         "id_client"=>$id_client,
-//         "date_commande"=>$date_commande,
-//         "montant_total"=>$montant_total,
-//         "statut"=>$statut,
-//         "description"=>$description
-//     ]);
-// }
