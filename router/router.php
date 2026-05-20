@@ -1,24 +1,21 @@
 <?php
-$controllers = [
-    "client" => "client",
-    "produit" => "produit",
-    "commande" => "commande"
+$controllers=[
+    "client"=>"client",
+    "commande"=>"commande",
+    "produit"=>"produit",
+    "dashboard"=>"dashboard",
+    "auth"=>"auth"
+
 ];
 
-$controller = $_REQUEST['controller'] ?? "client";
-
-// Rendre $controller disponible globalement
-//global $controller;
-
-if (array_key_exists($controller, $controllers)){
-    $path = ROOT."controller/".$controllers[$controller]."Controller.php";
-    
-    if (file_exists($path)) {
-        require_once($path);
-    } else {
-        echo "Fichier controller introuvable : " . $path;
-    }
-} else {
-    echo "controller introuvable";
+ $controller=$_REQUEST["controller"]??"client";
+ 
+ if (array_key_exists($controller, $controllers)) {
+     $path=ROOT."controller/".$controllers[$controller]."Controller.php";
+     }
+     else{
+         echo "controller introuvable";
+         exit();
 }
-?>
+         
+ require_once($path);
