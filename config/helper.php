@@ -13,7 +13,7 @@ function dd($test)
 function loadView(string $view,array $datas=[],string $layout="base") {
     ob_start();
     extract($datas);
-    require_once(ROOT."views/".$view.".php");
+    require_once(ROOT."/views/".$view.".php");
     $content=ob_get_clean();
     require_once ROOT."/views/layout/$layout.layout.php";
 }
