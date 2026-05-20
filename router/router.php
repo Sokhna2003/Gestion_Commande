@@ -3,7 +3,7 @@ $controllers=[
     "client"=>"client",
     "commande"=>"commande",
     "produit"=>"produit",
-    "dashboard"=>"dashboard",
+    //"dashboard"=>"dashboard",
     //"auth"=>"auth"
 
 ];
