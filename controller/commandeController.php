@@ -3,7 +3,7 @@ require_once __DIR__."/../model/commandeModel.php";
 
 // Tableau des actions disponibles
 $actions = [
-    "lister" => "listecommande",
+    "lister" => "listeCommande",
     "new" => "newCommande",
 ];
 // Récupération de l'action (par défaut "lister")
