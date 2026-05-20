@@ -27,7 +27,7 @@ if (array_key_exists($action, $actions)) {
 // Actions
 function listeProduit(){
     $produits = listerProduit(); // Récupérer les produits
-    $vuePath = ROOT . "views/produit/listerp.php";
+    $vuePath = ROOT . "views/produit/lister.php";
     
     if (file_exists($vuePath)) {
         require_once $vuePath;
