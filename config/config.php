@@ -17,3 +17,24 @@ function getPDO(){
         die("Erreur PDO :" . $e->getMessage());
     }
 }
+
+
+
+function executeSelect(string $sql,array $data=[],$one=false) {
+        $result=null;
+        $conn=openConnexion();
+        $statement = $conn->prepare($sql);
+      count($data)==0?$statement->execute():$statement->execute($data);
+      $result=$one==true?$statement->fetch():$statement->fetchAll();
+        closeConnexion($conn);
+        return $result ;
+  
+}
+
+
+function executeUpdate(string $sql,array $data){
+    $conn=openConnexion();
+        $statement = $conn->prepare($sql);
+        $statement->execute($data);
+   closeConnexion($conn);
+}
