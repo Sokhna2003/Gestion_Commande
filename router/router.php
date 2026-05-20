@@ -4,7 +4,7 @@ $controllers=[
     "commande"=>"commande",
     "produit"=>"produit",
     "dashboard"=>"dashboard",
-    "auth"=>"auth"
+    //"auth"=>"auth"
 
 ];
 
