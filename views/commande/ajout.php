@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<<<<<<< HEAD
-</head>
-<body>
-    
-=======
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
       @theme {
@@ -163,7 +158,6 @@
     </div>
 
 </main>
->>>>>>> 952b2c7c7f941a2046d3f073405483b0e10b9507
 
 </body>
 </html>
