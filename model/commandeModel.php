@@ -1,5 +1,5 @@
 <?php
-    require_once (ROOT."config/config.php");
+    require_once (ROOT."/config/config.php");
 
 function getAllCommandes(){
     $sql = "SELECT c.*, cl.nom, cl.prenom 
