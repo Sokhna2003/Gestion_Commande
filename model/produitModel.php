@@ -1,76 +1,94 @@
 <?php
     require_once __DIR__."/../config/config.php";
 function listerProduit(){
-    $pdo = getPDO();
     $sql = "SELECT * FROM `produit`";
-    $stm = $pdo->query($sql);
-    return $stm->fetchAll(PDO::FETCH_ASSOC);
+    return executeSelect($sql);
        
 }
 
-function ajoutProduit($libelle, $description, $prix, $stock)
+function ajoutProduit($reference, $libelle, $description, $prix, $stock)
 {
-    $pdo = getPDO();
-    $sql = "INSERT INTO produit(libelle, description, prix,stock)
-            VALUES (:libelle,:description,:prix,:stock)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
+    // $pdo = getPDO();
+    $sql = "INSERT INTO produit(reference, libelle, description, prix,stock)
+            VALUES (:reference,:libelle,:description,:prix,:stock)";
+    // $stmt = $pdo->prepare($sql);
+    // On regroupe les données dans un tableau pour correspondre aux paramètres
+    $data = [
+        'reference' => $reference,
         'libelle' => $libelle,
         'description' => $description,
         'prix' => $prix,
         'stock' => $stock,
-    ]);
+    ];
+    return executeUpdate($sql, $data);
 }
 
 function deleteProduit($id)
 {
-    $pdo = getPDO();
+    // $pdo = getPDO();
 
     $sql = "DELETE FROM produit WHERE id_produit = :id";
 
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
+    // $stmt = $pdo->prepare($sql);
+    // $stmt->execute([
+    //     'id' => $id
+    // ]);
+    $data = [
         'id' => $id
-    ]);
+    ];
+    return executeUpdate($sql, $data);
+
 }
 
 
-function updateProduit($id,$libelle, $description, $prix, $stock)
+function updateProduit($id, $reference, $libelle, $description, $prix, $stock)
 {
-    $pdo = getPDO();
+    // $pdo = getPDO();
 
     $sql = "UPDATE produit 
-            SET libelle = :libelle,
+            SET reference   = :reference, 
+                libelle = :libelle,
                 description = :description,
                 prix = :prix,
                 stock = :stock
             WHERE id_produit = :id";
 
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
+    // $stmt = $pdo->prepare($sql);
+    // $stmt->execute([
+    //     'id' => $id,
+    //     'libelle' => $libelle,
+    //     'description' => $description,
+    //     'prix' => $prix,
+    //     'stock' => $stock
+    // ]);
+    $data = [
         'id' => $id,
+        'reference' => $reference,
         'libelle' => $libelle,
         'description' => $description,
         'prix' => $prix,
-        'stock' => $stock
-    ]);
+        'stock' => $stock,
+    ];
+    return executeUpdate($sql, $data);
+
+
 }
 
 function getProduitById($id)
 {
-    $pdo = getPDO();
+    // $pdo = getPDO();
 
     $sql = "SELECT * FROM produit WHERE id_produit = :id";
 
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
+    // $stmt = $pdo->prepare($sql);
+    // $stmt->execute([
+    //     'id' => $id
+    // ]);
+    $data = [
         'id' => $id
-    ]);
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    ];
+    return executeSelect($sql, $data, true);
+    // return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 

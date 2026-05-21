@@ -22,6 +22,25 @@ function isMail($value){
 function validate(array $errors):bool{
     return count($errors)==0;
 }
+function validDataProduit(array $data):array{
+     $errors = [];
+        if(empty($data["reference"])){
+            $errors["referenceVide"] ="Veuillez remplir la reference";
+        }
+        if(empty($data["libelle"])){
+            $errors["libelleVide"] ="Veuillez remplir le libelle";
+        }
+        if(empty($data["description"])){
+                $errors["descriptionVide"] ="Veuillez remplir le description";
+            }
+        if(empty($data["prix"])){
+            $errors["prixVide"] ="Veuillez remplir le prix";
+            }
+        if(empty($data["stock"])){
+                $errors["stockVide"] ="Veuillez remplir le stock";
+            }
+        return $errors;
+}
 
 function emailExiste(string $email, int $excludeId = 0): bool {
     $pdo = getPDO();
