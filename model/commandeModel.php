@@ -27,36 +27,50 @@ function getProduitByReference($reference){
     return executeSelect($sql, ["reference"=>$reference], true);
 }
 
-function addCommande($id_client, $montant_total, $description, array $panier){
-    $pdo = getPDO();
+//function getProduitByReference($reference){
+//    $sql = "SELECT * FROM produit WHERE reference = :reference";
+//    return executeSelect($sql, ["reference" => $reference], true);
+//}
 
-    // 1. Insérer la commande
-    $sql = "INSERT INTO commande (id_client, date_commande, montant_total, statut, description) 
-            VALUES (:id_client, CURDATE(), :montant_total, 'NONSOLDE', :description)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
+function addCommande($id_client, $montant_total, $description, array $panier){
+
+    // 1. Ajouter la commande
+    $sqlCommande = "INSERT INTO commande 
+                    (id_client, date_commande, montant_total, statut, description) 
+                    VALUES 
+                    (:id_client, CURDATE(), :montant_total, 'NONSOLDE', :description)";
+
+    executeUpdate($sqlCommande, [
         "id_client"     => $id_client,
         "montant_total" => $montant_total,
         "description"   => $description
     ]);
 
+    // 2. Récupérer l'id de la dernière commande
+    $pdo = getPDO();
     $id_commande = $pdo->lastInsertId();
 
-    // 2. Insérer chaque ligne + décrémenter le stock
+    // 3. Ajouter les produits de la commande
     foreach($panier as $item){
-        $sqlLigne = "INSERT INTO produit_commande (id_commande, id_produit, quantite, prix_vente) 
-                     VALUES (:id_commande, :id_produit, :quantite, :prix_vente)";
-        $stmt = $pdo->prepare($sqlLigne);
-        $stmt->execute([
+
+        $sqlLigne = "INSERT INTO produit_commande 
+                    (id_commande, id_produit, quantite, prix_vente) 
+                    VALUES 
+                    (:id_commande, :id_produit, :quantite, :prix_vente)";
+
+        executeUpdate($sqlLigne, [
             "id_commande" => $id_commande,
             "id_produit"  => $item["id_produit"],
             "quantite"    => $item["quantite"],
             "prix_vente"  => $item["prix"]
         ]);
 
-        $sqlStock = "UPDATE produit SET stock = stock - :quantite WHERE id_produit = :id_produit";
-        $stmt = $pdo->prepare($sqlStock);
-        $stmt->execute([
+        // 4. Mettre à jour le stock
+        $sqlStock = "UPDATE produit 
+                    SET stock = stock - :quantite 
+                    WHERE id_produit = :id_produit";
+
+        executeUpdate($sqlStock, [
             "quantite"   => $item["quantite"],
             "id_produit" => $item["id_produit"]
         ]);

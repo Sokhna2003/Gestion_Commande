@@ -27,7 +27,7 @@
                     <?php foreach ($commandes as $commande): ?>
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                            <?=$commande["description"]?>
+                            <?=$commande["description"] ?? "Pas de description"?>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                             <?=$commande["date_commande"]?>
