@@ -24,10 +24,11 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <?php foreach ($produits as $p): ?>
+                    <?php foreach($produits as $p): ?>
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             <?= htmlspecialchars($p["libelle"]) ?>
+                            <div class="text-xs text-gray-400"><?= htmlspecialchars($p["reference"]) ?></div>
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                             <?= htmlspecialchars($p["description"]) ?>

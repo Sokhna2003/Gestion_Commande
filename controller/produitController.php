@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once ROOT."/model/produitModel.php";
 require_once ROOT."/config/validator.php";
 
@@ -13,79 +12,76 @@ $liste = function(){
 };
 
 $new = function(){
-    $errors = $_SESSION["errors_produit"] ?? [];
-    unset($_SESSION["errors_produit"]);
+    $errors = [];
+    $old = [];
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-produit'])){
+        $errors = validDataProduit($_POST);
+        
+        if(validate($errors)){
+            ajoutProduit(
+                trim($_POST['reference']),
+                trim($_POST['libelle']),
+                trim($_POST['description']),
+                (float)$_POST['prix'],
+                (int)$_POST['stock']
+            );
+            redirectTo("produit", "liste");
+        }
+        $old = $_POST;
+    }
     
     loadView("produit/ajout", [
         "errors" => $errors,
-        "produit" => null
+        "produit" => null,
+        "old" => $old
     ]);
-};
-
-$save = function(){
-    $errors = validDataProduit($_POST);
-    
-    if(empty($errors)){
-        $reference   = trim($_POST['reference']);
-        $libelle     = trim($_POST['libelle']);
-        $description = trim($_POST['description']);
-        $prix        = (float)$_POST['prix'];
-        $stock       = (int)$_POST['stock'];
-        
-        ajoutProduit($reference, $libelle, $description, $prix, $stock);
-        
-        redirectTo("produit", "liste");
-    } else {
-        $_SESSION["errors_produit"] = $errors;
-        redirectTo("produit", "new");
-    }
 };
 
 $modifier = function(){
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    $errors = $_SESSION["errors_produit"] ?? [];
-    unset($_SESSION["errors_produit"]);
+    $errors = [];
     
-    if($id > 0){
-        $produit = getProduitById($id);
-        if(!$produit){
-            $_SESSION["error_message"] = "Produit non trouvé";
+    if($id <= 0){
+        redirectTo("produit", "liste");
+        return;
+    }
+    
+    $produit = getProduitById($id);
+    if(!$produit){
+        redirectTo("produit", "liste");
+        return;
+    }
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-produit'])){
+        $errors = validDataProduit($_POST);
+        
+        if(validate($errors)){
+            updateProduit(
+                $id,
+                trim($_POST['reference']),
+                trim($_POST['libelle']),
+                trim($_POST['description']),
+                (float)$_POST['prix'],
+                (int)$_POST['stock']
+            );
             redirectTo("produit", "liste");
-            return;
         }
-        loadView("produit/ajout", [
-            "errors" => $errors,
-            "produit" => $produit
-        ]);
-    } else {
-        redirectTo("produit", "liste");
+        
+        // En cas d'erreur, on garde les données POST
+        $produit = $_POST;
     }
-};
-
-$update = function(){
-    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    $errors = validDataProduit($_POST);
     
-    if($id > 0 && empty($errors)){
-        $reference   = trim($_POST['reference']);
-        $libelle     = trim($_POST['libelle']);
-        $description = trim($_POST['description']);
-        $prix        = (float)$_POST['prix'];
-        $stock       = (int)$_POST['stock'];
-        
-        updateProduit($id, $reference, $libelle, $description, $prix, $stock);
-        
-        redirectTo("produit", "liste");
-    } else {
-        $_SESSION["errors_produit"] = $errors;
-        redirectTo("produit", "modifier&id=" . $id);
-    }
+    loadView("produit/ajout", [
+        "errors" => $errors,
+        "produit" => $produit
+    ]);
 };
 
 $supprimer = function(){
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if($id > 0){
-        dlistereleteProduit($id);
+        deleteProduit($id);
     }
     redirectTo("produit", "liste");
 };
@@ -93,9 +89,7 @@ $supprimer = function(){
 $actions = [
     "liste"     => $liste,
     "new"       => $new,
-    "save"      => $save,
     "modifier"  => $modifier,
-    "update"    => $update,
     "supprimer" => $supprimer
 ];
 
