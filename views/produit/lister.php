@@ -3,9 +3,9 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- HEADER -->
             <header class="flex items-center justify-between px-6 py-4 bg-white border-b">
-                <h1 class="text-xl font-semibold text-gray-800">Liste des Potduits</h1>
+                <h1 class="text-xl font-semibold text-gray-800">Liste des Produits</h1>
                 <div class="flex items-center">
-                    <a href="<?= WEBROOT ?>?controller=produit&action=new">
+                    <a href="<?= path("produit","new") ?>">
                     <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">
                         + Nouveau Produit
                     </button>
@@ -19,7 +19,6 @@
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr class="bg-gray-50 border-b border-gray-200">
-                                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Produit</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Prix</th>
                                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Stock</th>
@@ -29,7 +28,6 @@
                         <tbody>
                             <?php foreach($produits as $p):?>
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $p["id_produit"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                     <div class="flex flex-col">
                                         <span class="font-bold text-gray-900"><?= $p["libelle"] ?></span>
@@ -39,12 +37,16 @@
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $p["prix"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm"><?= $p["stock"] ?></td>
                                 <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                    <a href="<?= WEBROOT ?>?controller=produit&action=modifier&id=<?= $p['id_produit'] ?>">
+                                    <a href="<?= path("produit","modifier")."&id=".$p['id_produit'] ?>">
                                         <button class="text-blue-600 hover:text-blue-900 mr-3">
                                             Modifier
                                         </button>
                                     </a>
-                                    <a href="<?= WEBROOT ?>?controller=produit&action=supprimer&id=<?= $p['id_produit'] ?>"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
+                                    <a href="<?= path("produit","supprimer")."&id=".$p['id_produit'] ?>">
+                                        <button class="text-red-600 hover:text-red-900">
+                                            Supprimer
+                                        </button>
+                                    </a>
                                 </td>
                                 </tr>
                                 <?php endforeach; ?>

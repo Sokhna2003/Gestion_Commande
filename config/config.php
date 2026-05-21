@@ -22,19 +22,19 @@ function getPDO(){
 
 function executeSelect(string $sql,array $data=[],$one=false) {
         $result=null;
-        $conn=openConnexion();
+        $conn=getPDO();
         $statement = $conn->prepare($sql);
       count($data)==0?$statement->execute():$statement->execute($data);
       $result=$one==true?$statement->fetch():$statement->fetchAll();
-        closeConnexion($conn);
+        // closeConnexion($conn);
         return $result ;
   
 }
 
 
 function executeUpdate(string $sql,array $data){
-    $conn=openConnexion();
+    $conn=getPDO();
         $statement = $conn->prepare($sql);
         $statement->execute($data);
-   closeConnexion($conn);
+//    closeConnexion($conn);
 }
