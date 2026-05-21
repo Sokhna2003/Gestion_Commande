@@ -28,13 +28,11 @@ function deleteClient($id)
 {
     $pdo = getPDO();
 
-    $sql = "DELETE FROM client WHERE id_client = :id";
+    $stmt = $pdo->prepare("DELETE FROM commande WHERE id_client = :id");
+    $stmt->execute(['id' => $id]);
 
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'id' => $id
-    ]);
+    $stmt = $pdo->prepare("DELETE FROM client WHERE id_client = :id");
+    $stmt->execute(['id' => $id]);
 }
 
 
@@ -75,4 +73,17 @@ function getClientById($id)
     ]);
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function clientHasCommandes(int $id): bool {
+    $pdo = getPDO();
+    $stmt = $pdo->prepare("SELECT COUNT(*) as total FROM commande WHERE id_client = :id");
+    $stmt->execute(['id' => $id]);
+    return $stmt->fetch()['total'] > 0;
+}
+
+function countClients(){
+    $pdo = getPDO();
+    $stmt = $pdo->query("SELECT COUNT(*) as total FROM client");
+    return $stmt->fetch()['total'];
 }

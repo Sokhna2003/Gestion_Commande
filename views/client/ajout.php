@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Gestion Group Commandes</title>
-</head>
-
-<body class="bg-gray-100 font-sans">
-
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md mt-10">
 
     <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
@@ -16,6 +5,16 @@
         <?= isset($client) ? "Modifier le client" : "Ajouter un nouveau client" ?>
 
     </h2>
+
+    <?php if(!empty($errors ?? [])): ?>
+        <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
+            <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
+                <?php foreach($errors as $error): ?>
+                    <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
 
     <form method="POST" class="grid grid-cols-2 gap-4">
 
@@ -122,6 +121,3 @@
 
     </form>
 </div>
-
-</body>
-</html>

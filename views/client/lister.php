@@ -6,7 +6,7 @@
             <header class="flex items-center justify-between px-6 py-4 bg-white border-b">
                 <h1 class="text-xl font-semibold text-gray-800">Liste des Clients</h1>
                 <div class="flex items-center">
-                    <a href="<?= WEBROOT ?>?controller=client&action=new">
+                    <a href="<?= WEBROOT ?>?controller=client&action=ajout">
                     <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">
                         + Nouveau Client
                     </button>
@@ -45,7 +45,7 @@
         Modifier
     </button>
 </a>
-                                    <a href="<?= WEBROOT ?>?controller=client&action=supprimer=<?= $c['id_client'] ?>"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
+                                    <a href="<?= WEBROOT ?>?controller=client&action=supprimer&delete=<?= $c['id_client'] ?>"><button class="text-red-600 hover:text-red-900">Supprimer</button></a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
