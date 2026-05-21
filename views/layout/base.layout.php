@@ -15,9 +15,22 @@
                 Admin Panel
             </div>
             <nav class="flex-1 p-4 space-y-2">
-                <a href="<?=path("client","liste")?>" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Clients</a>
-                <a href="<?=path("produit","liste")?>" class="block py-2.5 px-4 rounded hover:bg-indigo-800 transition">Produits</a>
-                <a href="<?=path("commande","liste")?>" class="block py-2.5 px-4 rounded bg-indigo-700 transition">Commandes</a>
+                <?php 
+                    // Déterminer le controller actif
+                    $currentController = $_REQUEST["controller"] ?? "client";
+                ?>
+                <a href="<?=path("client","liste")?>" 
+                   class="block py-2.5 px-4 rounded transition <?= $currentController == 'client' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
+                    Clients
+                </a>
+                <a href="<?=path("produit","liste")?>" 
+                   class="block py-2.5 px-4 rounded transition <?= $currentController == 'produit' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
+                    Produits
+                </a>
+                <a href="<?=path("commande","liste")?>" 
+                   class="block py-2.5 px-4 rounded transition <?= $currentController == 'commande' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
+                    Commandes
+                </a>
             </nav>
             <div class="p-4 border-t border-indigo-800 text-sm text-indigo-300">
                 © 2024 Group Commandes 
