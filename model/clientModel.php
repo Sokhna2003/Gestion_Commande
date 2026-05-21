@@ -1,45 +1,35 @@
 <?php
-    require_once __DIR__."/../config/config.php";
+require_once ROOT."/config/config.php";
+
 function listerClient(){
-    $pdo = getPDO();
-    $sql = "SELECT * FROM `client`";
-    $stm = $pdo->query($sql);
-    return $stm->fetchAll(PDO::FETCH_ASSOC);
-       
+    $sql = "SELECT * FROM `client` ORDER BY id_client DESC";
+    return executeSelect($sql);
 }
 
-
-function ajoutClient($nom, $prenom, $telephone, $email, $adresse)
-{
-    $pdo = getPDO();
-    $sql = "INSERT INTO client(nom,prenom,telephone,email,adresse)
-            VALUES (:nom,:prenom,:telephone,:email,:adresse)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'nom' => $nom,
-        'prenom' => $prenom,
+function ajoutClient($nom, $prenom, $telephone, $email, $adresse){
+    $sql = "INSERT INTO client(nom, prenom, telephone, email, adresse)
+            VALUES (:nom, :prenom, :telephone, :email, :adresse)";
+    $data = [
+        'nom'       => $nom,
+        'prenom'    => $prenom,
         'telephone' => $telephone,
-        'email' => $email,
-        'adresse' => $adresse
-    ]);
+        'email'     => $email,
+        'adresse'   => $adresse
+    ];
+    return executeUpdate($sql, $data);
 }
 
-function deleteClient($id)
-{
-    $pdo = getPDO();
-
-    $stmt = $pdo->prepare("DELETE FROM commande WHERE id_client = :id");
-    $stmt->execute(['id' => $id]);
-
-    $stmt = $pdo->prepare("DELETE FROM client WHERE id_client = :id");
-    $stmt->execute(['id' => $id]);
+function deleteClient($id){
+    // D'abord supprimer les commandes liées (cascade manuelle)
+    $sqlCommande = "DELETE FROM commande WHERE id_client = :id";
+    executeUpdate($sqlCommande, ['id' => $id]);
+    
+    // Puis supprimer le client
+    $sqlClient = "DELETE FROM client WHERE id_client = :id";
+    return executeUpdate($sqlClient, ['id' => $id]);
 }
 
-
-function updateClient($id, $nom, $prenom, $telephone, $email, $adresse)
-{
-    $pdo = getPDO();
-
+function updateClient($id, $nom, $prenom, $telephone, $email, $adresse){
     $sql = "UPDATE client 
             SET nom = :nom,
                 prenom = :prenom,
@@ -47,43 +37,32 @@ function updateClient($id, $nom, $prenom, $telephone, $email, $adresse)
                 email = :email,
                 adresse = :adresse
             WHERE id_client = :id";
-
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'id' => $id,
-        'nom' => $nom,
-        'prenom' => $prenom,
+    $data = [
+        'id'        => $id,
+        'nom'       => $nom,
+        'prenom'    => $prenom,
         'telephone' => $telephone,
-        'email' => $email,
-        'adresse' => $adresse
-    ]);
+        'email'     => $email,
+        'adresse'   => $adresse
+    ];
+    return executeUpdate($sql, $data);
 }
 
-function getClientById($id)
-{
-    $pdo = getPDO();
-
+function getClientById($id){
     $sql = "SELECT * FROM client WHERE id_client = :id";
-
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'id' => $id
-    ]);
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $data = ['id' => $id];
+    return executeSelect($sql, $data, true);
 }
 
 function clientHasCommandes(int $id): bool {
-    $pdo = getPDO();
-    $stmt = $pdo->prepare("SELECT COUNT(*) as total FROM commande WHERE id_client = :id");
-    $stmt->execute(['id' => $id]);
-    return $stmt->fetch()['total'] > 0;
+    $sql = "SELECT COUNT(*) as total FROM commande WHERE id_client = :id";
+    $result = executeSelect($sql, ['id' => $id], true);
+    return $result['total'] > 0;
 }
 
 function countClients(){
-    $pdo = getPDO();
-    $stmt = $pdo->query("SELECT COUNT(*) as total FROM client");
-    return $stmt->fetch()['total'];
+    $sql = "SELECT COUNT(*) as total FROM client";
+    $result = executeSelect($sql, [], true);
+    return $result['total'];
 }
+?>

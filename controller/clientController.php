@@ -1,60 +1,120 @@
 <?php
 require_once ROOT."/model/clientModel.php";
+require_once ROOT."/config/validator.php";
 
+// ─── LISTE ────────────────────────────────────────────────────
 $liste = function(){
     $clients = listerClient();
-    $total_client = countClients();
-    loadView("client/lister", ["clients"=>$clients, "total_client"=>$total_client]);
+    $total_clients = countClients();
+    loadView("client/liste", [
+        "clients" => $clients,
+        "total_clients" => $total_clients
+    ]);
 };
 
+// ─── AJOUT (formulaire + traitement) ─────────────────────────
 $ajout = function(){
-    if(isset($_POST['add-client'])){
+    $errors = [];
+    $old = [];
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-client'])){
         $errors = validDataClient($_POST);
+        
         if(validate($errors)){
-            ajoutClient($_POST['nom'], $_POST['prenom'], $_POST['telephone'], $_POST['email'], $_POST['adresse']);
+            ajoutClient(
+                $_POST['nom'],
+                $_POST['prenom'],
+                $_POST['telephone'],
+                $_POST['email'],
+                $_POST['adresse']
+            );
             redirectTo("client", "liste");
         }
-        loadView("client/ajout", ["errors" => $errors, "old" => $_POST]);
+        $old = $_POST;
+    }
+    
+    loadView("client/ajout", [
+        "errors" => $errors,
+        "client" => null,
+        "old" => $old
+    ]);
+};
+
+// ─── MODIFIER (formulaire + traitement) ───────────────────────
+$modifier = function(){
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $errors = [];
+    
+    if($id <= 0){
+        redirectTo("client", "liste");
         return;
     }
-    loadView("client/ajout");
+    
+    $client = getClientById($id);
+    if(!$client){
+        redirectTo("client", "liste");
+        return;
+    }
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-client'])){
+        $errors = validDataClient($_POST, $id);
+        
+        if(validate($errors)){
+            updateClient(
+                $id,
+                $_POST['nom'],
+                $_POST['prenom'],
+                $_POST['telephone'],
+                $_POST['email'],
+                $_POST['adresse']
+            );
+            redirectTo("client", "liste");
+        }
+        
+        // En cas d'erreur, on garde les données POST
+        $client = $_POST;
+    }
+    
+    loadView("client/ajout", [
+        "errors" => $errors,
+        "client" => $client
+    ]);
 };
 
+// ─── SUPPRIMER ────────────────────────────────────────────────
+$supprimer = function(){
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    if($id > 0){
+        if(clientHasCommandes($id)){
+            // Stocker l'erreur dans une variable flash simple
+            $_SESSION["error_message"] = "Impossible de supprimer ce client car il a des commandes associées.";
+        } else {
+            deleteClient($id);
+        }
+    }
+    redirectTo("client", "liste");
+};
+
+// ─── DETAIL ───────────────────────────────────────────────────
 $detail = function(){
-    echo "je detail un client";
-};
-
-$modifier = function(){
-    if(isset($_GET['id'])){
-        $id = (int) $_GET['id'];
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    if($id > 0){
         $client = getClientById($id);
-        if(isset($_POST['update-client'])){
-            $errors = validDataClient($_POST, $id);
-            if(validate($errors)){
-                updateClient($id, $_POST['nom'], $_POST['prenom'], $_POST['telephone'], $_POST['email'], $_POST['adresse']);
-                redirectTo("client", "liste");
-            }
-            $client = $_POST;
-            loadView("client/ajout", ["client" => $client, "errors" => $errors]);
+        if($client){
+            loadView("client/detail", ["client" => $client]);
             return;
         }
-        loadView("client/ajout", ["client"=>$client]);
     }
+    redirectTo("client", "liste");
 };
 
-$supprimer = function(){
-    if(isset($_GET['delete'])){
-        deleteClient((int)$_GET['delete']);
-        redirectTo("client", "liste");
-    }
-};
-
+// ─── ROUTER DES ACTIONS ───────────────────────────────────────
 $actions = [
     "liste"     => $liste,
     "ajout"     => $ajout,
-    "detail"    => $detail,
     "modifier"  => $modifier,
-    "supprimer" => $supprimer
+    "supprimer" => $supprimer,
+    "detail"    => $detail
 ];
 
 $action = $_REQUEST["action"] ?? "liste";
@@ -62,6 +122,7 @@ $action = $_REQUEST["action"] ?? "liste";
 if(array_key_exists($action, $actions)){
     $actions[$action]();
 } else {
-    echo "page introuvable c client";
+    echo "Page introuvable client";
     exit();
 }
+?>
