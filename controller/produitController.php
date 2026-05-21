@@ -1,129 +1,110 @@
 <?php
-require_once __DIR__."/../model/produitModel.php";
-require_once __DIR__."/../config/validator.php";
+session_start();
+require_once ROOT."/model/produitModel.php";
+require_once ROOT."/config/validator.php";
 
-// Tableau des actions disponibles
-$actions = [
-    "lister" => "listeProduit",
-    "new" => "newProduit",
-    "supprimer" => "supprimerProduit",
-    "modifier" => "modifierProduit"
-];
+$liste = function(){
+    $produits = listerProduit();
+    $total_produits = countTable("produit");
+    loadView("produit/liste", [
+        "produits" => $produits,
+        "total_produits" => $total_produits
+    ]);
+};
 
-// Récupération de l'action (par défaut "lister")
-$action = $_REQUEST['action'] ?? "lister";
+$new = function(){
+    $errors = $_SESSION["errors_produit"] ?? [];
+    unset($_SESSION["errors_produit"]);
+    
+    loadView("produit/ajout", [
+        "errors" => $errors,
+        "produit" => null
+    ]);
+};
 
-// Exécution de l'action si elle existe
-if (array_key_exists($action, $actions)) {
-    $fonction = $actions[$action];
-    if (function_exists($fonction)) {
-        $fonction();
+$save = function(){
+    $errors = validDataProduit($_POST);
+    
+    if(empty($errors)){
+        $reference   = trim($_POST['reference']);
+        $libelle     = trim($_POST['libelle']);
+        $description = trim($_POST['description']);
+        $prix        = (float)$_POST['prix'];
+        $stock       = (int)$_POST['stock'];
+        
+        ajoutProduit($reference, $libelle, $description, $prix, $stock);
+        
+        redirectTo("produit", "liste");
     } else {
-        echo "Erreur : fonction '$fonction' non trouvée";
+        $_SESSION["errors_produit"] = $errors;
+        redirectTo("produit", "new");
     }
-} else {
-    echo "Erreur : action '$action' non trouvée";
-}
+};
 
-// Actions
-function listeProduit(){
-    $produits = listerProduit(); // Récupérer les produits
-    // $vuePath = ROOT . "views/produit/lister.php";
-    loadView("produit/lister",["produits"=>$produits]);
-    
-    // if (file_exists($vuePath)) {
-    //     require_once $vuePath;
-    // } else {
-    //     echo "Vue introuvable : " . $vuePath;
-    // }
-}
-
-function newProduit()
-{
-    $errors = [];
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-produit'])) {
-        $errors = validDataProduit($_POST);
-    
-        if (empty($errors)) {
-            $reference = trim($_POST['reference']);
-            $libelle = trim($_POST['libelle']);
-            $description = trim($_POST['description']);
-            $prix = (float)$_POST['prix'];
-            $stock = (int)$_POST['stock'];
-            
-            ajoutProduit($reference, $libelle, $description, $prix, $stock);
-            
-            redirectTo("produit","lister");
-            exit();
-        }
-    }
-    // $vuePath = ROOT . "views/produit/ajout.php";
-    // if (file_exists($vuePath)) {
-    //     require_once $vuePath;
-    // } else {
-    //     echo "Vue introuvable : " . $vuePath;
-    // }
-    loadView("produit/ajout",["errors"=>$errors]);
-}
-
-function supprimerProduit(){
+$modifier = function(){
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    if($id > 0){
-        // $id = intval($_GET['id']);
-        deleteProduit($id);
-        // header("Location: " . WEBROOT . "?controller=produit&action=lister");
-        // exit();
-    } 
-    redirectTo("produit", "lister");
-    exit();
-    // else {
-    //     // Debug si le paramètre n'est pas trouvé
-    //     echo "Aucun ID de suppression reçu. GET reçu : ";
-    //     print_r($_GET);
-    // }
-}
-
-function modifierProduit()
-{
-    // Récupérer l'ID depuis GET
-    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0 ;
-    $errors = [];
+    $errors = $_SESSION["errors_produit"] ?? [];
+    unset($_SESSION["errors_produit"]);
+    
     if($id > 0){
         $produit = getProduitById($id);
-        
-        // Vérifier si le produit existe
-        if(!$produit) {
-            die("Produit non trouvé avec l'ID : " . $id);
+        if(!$produit){
+            $_SESSION["error_message"] = "Produit non trouvé";
+            redirectTo("produit", "liste");
+            return;
         }
-        // Si le formulaire de modification est soumis
-        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-produit'])){
-            $errors = validDataProduit($_POST);
-            if (empty($errors)) {
-                $reference = trim($_POST['reference']);
-                $libelle = trim($_POST['libelle']);
-                $description = trim($_POST['description']);
-                $prix = (float)$_POST['prix'];
-                $stock = (int)$_POST['stock'];
-                
-                updateProduit($id, $reference, $libelle, $description, $prix, $stock);
-                
-                redirectTo("produit","lister");
-                // header("Location: " . WEBROOT . "?controller=produit&action=lister");
-                exit();
-            }
-            
-        }
-        
-        // $vuePath = ROOT . "views/produit/ajout.php";
-        // if (file_exists($vuePath)) {
-        //     require_once $vuePath;
-        // } else {
-        //     echo "Vue introuvable : " . $vuePath;
-        // }
-        loadView("produit/ajout",["errors"=>$errors, "produit"=>$produit]);
-
+        loadView("produit/ajout", [
+            "errors" => $errors,
+            "produit" => $produit
+        ]);
     } else {
-        echo "ID produit non valide";
+        redirectTo("produit", "liste");
     }
+};
+
+$update = function(){
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $errors = validDataProduit($_POST);
+    
+    if($id > 0 && empty($errors)){
+        $reference   = trim($_POST['reference']);
+        $libelle     = trim($_POST['libelle']);
+        $description = trim($_POST['description']);
+        $prix        = (float)$_POST['prix'];
+        $stock       = (int)$_POST['stock'];
+        
+        updateProduit($id, $reference, $libelle, $description, $prix, $stock);
+        
+        redirectTo("produit", "liste");
+    } else {
+        $_SESSION["errors_produit"] = $errors;
+        redirectTo("produit", "modifier&id=" . $id);
+    }
+};
+
+$supprimer = function(){
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    if($id > 0){
+        dlistereleteProduit($id);
+    }
+    redirectTo("produit", "liste");
+};
+
+$actions = [
+    "liste"     => $liste,
+    "new"       => $new,
+    "save"      => $save,
+    "modifier"  => $modifier,
+    "update"    => $update,
+    "supprimer" => $supprimer
+];
+
+$action = $_REQUEST["action"] ?? "liste";
+
+if(array_key_exists($action, $actions)){
+    $actions[$action]();
+} else {
+    echo "Page introuvable produit";
+    exit();
 }
 ?>
