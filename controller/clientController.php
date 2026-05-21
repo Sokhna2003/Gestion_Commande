@@ -2,7 +2,6 @@
 require_once ROOT."/model/clientModel.php";
 require_once ROOT."/config/validator.php";
 
-// ─── LISTE ────────────────────────────────────────────────────
 $liste = function(){
     $clients = listerClient();
     $total_clients = countClients();
@@ -12,7 +11,6 @@ $liste = function(){
     ]);
 };
 
-// ─── AJOUT (formulaire + traitement) ─────────────────────────
 $ajout = function(){
     $errors = [];
     $old = [];
@@ -40,7 +38,6 @@ $ajout = function(){
     ]);
 };
 
-// ─── MODIFIER (formulaire + traitement) ───────────────────────
 $modifier = function(){
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     $errors = [];
@@ -81,7 +78,6 @@ $modifier = function(){
     ]);
 };
 
-// ─── SUPPRIMER ────────────────────────────────────────────────
 $supprimer = function(){
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if($id > 0){
@@ -95,7 +91,6 @@ $supprimer = function(){
     redirectTo("client", "liste");
 };
 
-// ─── DETAIL ───────────────────────────────────────────────────
 $detail = function(){
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if($id > 0){
@@ -108,7 +103,6 @@ $detail = function(){
     redirectTo("client", "liste");
 };
 
-// ─── ROUTER DES ACTIONS ───────────────────────────────────────
 $actions = [
     "liste"     => $liste,
     "ajout"     => $ajout,
