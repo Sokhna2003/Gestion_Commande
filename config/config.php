@@ -23,7 +23,6 @@ function executeSelect(string $sql,array $data=[],$one=false) {
         $statement = $conn->prepare($sql);
       count($data)==0?$statement->execute():$statement->execute($data);
       $result=$one==true?$statement->fetch():$statement->fetchAll();
-        // closeConnexion($conn);
         return $result ;
   
 }
@@ -33,7 +32,6 @@ function executeUpdate(string $sql,array $data){
     $conn=getPDO();
     $statement = $conn->prepare($sql);
     $statement->execute($data);
-    // closeConnexion($conn);
 }
 
 // function executeSelect(string $sql, array $data=[], $one=false){

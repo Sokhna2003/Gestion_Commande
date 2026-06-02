@@ -1,8 +1,7 @@
 <?php
-session_start();
+// session_start();
 require_once ROOT."/model/commandeModel.php";
 
-// ─── Initialiser la session commande si vide ───────────────────
 if(!isset($_SESSION["commande"])){
     $_SESSION["commande"] = [
         "client"  => null,
@@ -11,7 +10,6 @@ if(!isset($_SESSION["commande"])){
     ];
 }
 
-// ─── LISTE ────────────────────────────────────────────────────
 $liste = function(){
     $commandes = getAllCommandes();
     $total_commandes = countTable("commande");
@@ -21,7 +19,6 @@ $liste = function(){
     ]);
 };
 
-// ─── AJOUT : affichage ────────────────────────────────────────
 $ajout = function(){
     $client       = $_SESSION["commande"]["client"];
     $produit      = $_SESSION["commande"]["produit"];
@@ -50,7 +47,6 @@ $ajout = function(){
     ]);
 };
 
-// ─── CHERCHER CLIENT ──────────────────────────────────────────
 $rechercherClient = function(){
     $tel = trim($_POST["tel_client"] ?? "");
 
@@ -75,7 +71,6 @@ $rechercherClient = function(){
     redirectTo("commande", "ajout");
 };
 
-// ─── CHERCHER PRODUIT ─────────────────────────────────────────
 $rechercherProduit = function(){
     $ref = trim($_POST["ref_produit"] ?? "");
 
@@ -96,7 +91,6 @@ $rechercherProduit = function(){
     redirectTo("commande", "ajout");
 };
 
-// ─── AJOUTER AU PANIER ────────────────────────────────────────
 $ajouterAuPanier = function(){
     $produit = $_SESSION["commande"]["produit"];
     $qteStr  = trim($_POST["qte_commande"] ?? "");
@@ -162,7 +156,6 @@ $ajouterAuPanier = function(){
     redirectTo("commande", "ajout");
 };
 
-// ─── RETIRER DU PANIER ────────────────────────────────────────
 $retirerDuPanier = function(){
     $index = $_POST["index"] ?? null;
 
@@ -173,7 +166,6 @@ $retirerDuPanier = function(){
     redirectTo("commande", "ajout");
 };
 
-// ─── ENREGISTRER LA COMMANDE ──────────────────────────────────
 $enregistrer = function(){
     $client  = $_SESSION["commande"]["client"];
     $panier  = $_SESSION["commande"]["panier"];
@@ -201,7 +193,6 @@ $enregistrer = function(){
     redirectTo("commande", "liste");
 };
 
-// ─── ROUTER DES ACTIONS ───────────────────────────────────────
 $actions = [
     "liste"            => $liste,
     "ajout"            => $ajout,

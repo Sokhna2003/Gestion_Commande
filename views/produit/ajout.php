@@ -14,6 +14,13 @@
     <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
         <?= isset($produit) ? "Modifier le produit" : "Ajouter un nouveau produit" ?>
     </h2>
+    <p class="mt-1 text-sm text-gray-500">
+        <?= isset($produit) && !empty($produit) && isset($produit['id_produit']) ? "Modifiez les informations du produit ci-dessous" : "Remplissez le formulaire pour ajouter un produit" ?>
+    </p>
+</header>
+
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
 
     <form action="<?= isset($produit) ? path('produit', 'modifier').'&id='.$produit['id_produit'] : path('produit', 'new') ?>" method="POST" class="grid grid-cols-2 gap-4">
 
