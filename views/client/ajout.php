@@ -1,3 +1,4 @@
+
 <header class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-6">
     <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">
         <?= isset($client) && !empty($client) && !isset($client['prenom']) ? "Modifier le client" : "Ajouter un nouveau client" ?>
@@ -10,9 +11,29 @@
 <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
 
-        
-
-        <form method="POST" class="grid grid-cols-2 gap-4">
+        <form action="" method="POST" class="grid grid-cols-2 gap-4">
+            <!-- photo -->
+            <div class="col-span-2">
+                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Avatar</label>
+                <input
+                    type="text"
+                    name="photo"
+                    value="<?= htmlspecialchars($client['photo'] ?? $old['photo'] ?? '') ?>"
+                    placeholder="https://exemple.com"
+                    class="mt-1 block w-full px-3 py-2 border <?= isset($errors['photoVide']) ? 'border-red-400' : 'border-gray-300' ?> rounded-md text-sm focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                >
+                <?php if(isset($errors['photoVide'])): ?>
+                    <p class="mt-1 text-xs text-red-600"><?= $errors['photoVide'] ?></p>
+                <?php endif; ?>
+                
+                <!-- Aperçu de l'image collée si elle existe -->
+                <?php if(!empty($client['photo']) || !empty($old['photo'])): ?>
+                    <div class="mt-2 flex items-center space-x-2">
+                        <span class="text-xs text-gray-500">Aperçu :</span>
+                        <img src="<?= htmlspecialchars($client['photo'] ?? $old['photo']) ?>" class="w-12 h-12 object-cover rounded-full border" onerror="this.src='https://flaticon.com';">
+                    </div>
+                <?php endif; ?>
+            </div>
 
             <!-- Prénom -->
             <div class="col-span-1">
@@ -95,16 +116,14 @@
                     <button
                         name="update-client"
                         type="submit"
-                        class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 px-4 rounded-md font-semibold text-sm transition cursor-pointer shadow-sm"
-                    >
+                        class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 px-4 rounded-md font-semibold text-sm transition cursor-pointer shadow-sm">
                         Confirmer la modification
                     </button>
                 <?php else: ?>
                     <button
                         name="add-client"
                         type="submit"
-                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-4 rounded-md font-semibold text-sm transition cursor-pointer shadow-sm"
-                    >
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-4 rounded-md font-semibold text-sm transition cursor-pointer shadow-sm">
                         Enregistrer le client
                     </button>
                 <?php endif; ?>

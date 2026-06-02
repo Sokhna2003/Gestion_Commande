@@ -79,5 +79,8 @@ function validDataClient(array $data, int $excludeId = 0):array{
         if(empty($data["adresse"])){
             $errors["adresse"] ="Veuillez remplir l'adresse";
         }
+        if(empty(trim($data["photo"] ?? ''))){
+            $errors["photoVide"] = "Veuillez coller le lien d'une photo pour le client";
+        }
         return $errors;
 }

@@ -6,10 +6,11 @@ function listerClient(){
     return executeSelect($sql);
 }
 
-function ajoutClient($nom, $prenom, $telephone, $email, $adresse){
-    $sql = "INSERT INTO client(nom, prenom, telephone, email, adresse)
-            VALUES (:nom, :prenom, :telephone, :email, :adresse)";
+function ajoutClient($photo, $nom, $prenom, $telephone, $email, $adresse){
+    $sql = "INSERT INTO client(photo, nom, prenom, telephone, email, adresse)
+            VALUES (:photo, :nom, :prenom, :telephone, :email, :adresse)";
     $data = [
+        'photo' => $photo,
         'nom'       => $nom,
         'prenom'    => $prenom,
         'telephone' => $telephone,
@@ -29,9 +30,10 @@ function deleteClient($id){
     return executeUpdate($sqlClient, ['id' => $id]);
 }
 
-function updateClient($id, $nom, $prenom, $telephone, $email, $adresse){
+function updateClient($id, $photo, $nom, $prenom, $telephone, $email, $adresse){
     $sql = "UPDATE client 
-            SET nom = :nom,
+            SET photo = :photo,
+                nom = :nom,
                 prenom = :prenom,
                 telephone = :telephone,
                 email = :email,
@@ -39,6 +41,7 @@ function updateClient($id, $nom, $prenom, $telephone, $email, $adresse){
             WHERE id_client = :id";
     $data = [
         'id'        => $id,
+        'photo'     =>$photo,
         'nom'       => $nom,
         'prenom'    => $prenom,
         'telephone' => $telephone,
