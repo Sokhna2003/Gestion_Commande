@@ -29,7 +29,7 @@
             <input
                 type="text"
                 name="reference"
-                value="<?= htmlspecialchars($produit['reference'] ?? $_POST['reference'] ?? '') ?>"
+                value="<?= htmlspecialchars($produit['reference'] ?? $old['reference'] ?? '') ?>"
                 class="mt-1 block w-full border <?= isset($errors['referenceVide']) ? 'border-red-400 focus:outline-red-500' : 'border-gray-300' ?> rounded-md shadow-xs p-2"
             >
             <?php if(isset($errors['referenceVide'])): ?>
@@ -42,7 +42,7 @@
             <input
                 type="text"
                 name="libelle"
-                value="<?= htmlspecialchars($produit['libelle'] ?? $_POST['libelle'] ?? '') ?>"
+                value="<?= htmlspecialchars($produit['libelle'] ?? $old['libelle'] ?? '') ?>"
                 class="mt-1 block w-full border <?= isset($errors['libelleVide']) ? 'border-red-400 focus:outline-red-500' : 'border-gray-300' ?> rounded-md shadow-xs p-2"
             >
             <?php if(isset($errors['libelleVide'])): ?>
@@ -56,7 +56,7 @@
                 type="number"
                 step="0.01"
                 name="prix"
-                value="<?= htmlspecialchars($produit['prix'] ?? $_POST['prix'] ?? '') ?>"
+                value="<?= htmlspecialchars($produit['prix'] ?? $old['prix'] ?? '') ?>"
                 class="mt-1 block w-full border <?= isset($errors['prixVide']) ? 'border-red-400 focus:outline-red-500' : 'border-gray-300' ?> rounded-md shadow-xs p-2"
             >
             <?php if(isset($errors['prixVide'])): ?>
@@ -69,7 +69,7 @@
             <input
                 type="number"
                 name="stock"
-                value="<?= htmlspecialchars($produit['stock'] ?? $_POST['stock'] ?? '') ?>"
+                value="<?= htmlspecialchars($produit['stock'] ?? $old['stock'] ?? '') ?>"
                 class="mt-1 block w-full border <?= isset($errors['stockVide']) ? 'border-red-400 focus:outline-red-500' : 'border-gray-300' ?> rounded-md shadow-xs p-2"
             >
             <?php if(isset($errors['stockVide'])): ?>
@@ -83,7 +83,7 @@
                 name="description"
                 rows="3"
                 class="mt-1 block w-full border <?= isset($errors['descriptionVide']) ? 'border-red-400 focus:outline-red-500' : 'border-gray-300' ?> rounded-md shadow-xs p-2"
-            ><?= htmlspecialchars($produit['description'] ?? $_POST['description'] ?? '') ?></textarea>
+            ><?= htmlspecialchars($produit['description'] ?? $old['description'] ?? '') ?></textarea>
             <?php if(isset($errors['descriptionVide'])): ?>
                 <span class="text-red-500 text-xs mt-1 block font-medium"><?= $errors['descriptionVide'] ?></span>
             <?php endif; ?>

@@ -20,6 +20,7 @@ $ajout = function(){
         
         if(validate($errors)){
             ajoutClient(
+                $_POST['photo'],
                 $_POST['nom'],
                 $_POST['prenom'],
                 $_POST['telephone'],
@@ -55,10 +56,10 @@ $modifier = function(){
     
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-client'])){
         $errors = validDataClient($_POST, $id);
-        
         if(validate($errors)){
             updateClient(
                 $id,
+                $_POST['photo'],
                 $_POST['nom'],
                 $_POST['prenom'],
                 $_POST['telephone'],
