@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 require_once ROOT."/model/commandeModel.php";
 
 if(!isset($_SESSION["commande"])){

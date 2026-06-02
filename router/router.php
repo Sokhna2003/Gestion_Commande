@@ -3,15 +3,14 @@ $controllers=[
     "client"=>"client",
     "commande"=>"commande",
     "produit"=>"produit",
-    //"dashboard"=>"dashboard",
-    //"auth"=>"auth"
+    "dashboard"=>"dashboard",
+    "auth"=>"auth"
 
 ];
-
- $controller=$_REQUEST["controller"]??"client";
+ $controller=$_REQUEST["controller"]??"auth";
  
  if (array_key_exists($controller, $controllers)) {
-     $path=ROOT."/controller/".$controllers[$controller]."Controller.php";
+     $path=ROOT."controller/".$controllers[$controller]."Controller.php";
      }
      else{
          echo "controller introuvable";
