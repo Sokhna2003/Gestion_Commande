@@ -26,7 +26,6 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Téléphone</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Adresse</th>
@@ -36,13 +35,21 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     <?php foreach($clients as $c): ?>
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <?= $c["id_client"] ?>
-                        </td>
+                        
                         <td class="px-6 py-4 text-sm">
-                            <div class="flex flex-col">
-                                <span class="font-bold text-gray-900"><?= htmlspecialchars($c["prenom"] . ' ' . $c["nom"]) ?></span>
-                                <span class="text-gray-500 text-xs"><?= htmlspecialchars($c["email"]) ?></span>
+                            <div class="flex items-center space-x-3">
+                                <div class="flex-shrink-0 w-10 h-10">
+                                    <img 
+                                        class="w-10 h-10 rounded-full object-cover border border-gray-100" 
+                                        src="<?= !empty(trim($c["photo"] ?? '')) ? htmlspecialchars($c["photo"]) : 'https://flaticon.com' ?>" 
+                                        alt="Avatar"
+                                        onerror="this.src='https://flaticon.com';"
+                                    >
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-gray-900"><?= htmlspecialchars($c["prenom"] . ' ' . $c["nom"]) ?></span>
+                                    <span class="text-gray-500 text-xs"><?= htmlspecialchars($c["email"]) ?></span>
+                                </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
