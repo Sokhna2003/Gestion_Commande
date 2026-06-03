@@ -1,12 +1,18 @@
 <!-- En-tête -->
 <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
     <div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Commandes</h2>
-        <p class="mt-1 text-sm text-gray-500">Gérez toutes les commandes de vos clients.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">
+            <?= hasRole('ADMIN') ? "Commandes" : "Mes Commandes" ?>
+        </h2>
+        <p class="mt-1 text-sm text-gray-500">
+            <?= hasRole('ADMIN') ? "Gérer toutes les commandes de vos clients." : "Consultez l'historique de vos achats." ?>
+        </p>
     </div>
-    <a href="<?=path("commande","ajout")?>" class="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition shadow-sm">
-        + Nouvelle commande
-    </a>
+    <?php if (hasRole('ADMIN')): ?>
+        <a href="<?=path("commande","ajout")?>" class="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition shadow-sm">
+            + Nouvelle commande
+        </a>
+    <?php endif; ?>
 </header>
 
 <!-- Tableau des commandes -->
@@ -47,10 +53,14 @@
                     <?php if(empty($commandes)): ?>
                     <tr>
                         <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                            Aucune commande trouvée.
-                            <a href="<?=path("commande","ajout")?>" class="text-indigo-600 hover:underline">
-                                Créez la première commande
-                            </a>
+                            <!-- Message adapté selon le rôle -->
+                            <?= hasRole('ADMIN') ? "Aucune commande trouvée." : "Vous n'avez pas encore passé de commande." ?>
+                            
+                            <?php if (hasRole('ADMIN')): ?>
+                                <a href="<?=path("commande","ajout")?>" class="text-indigo-600 hover:underline">
+                                    Créez la première commande
+                                </a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endif; ?>

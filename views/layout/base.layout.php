@@ -23,14 +23,20 @@
                    class="block py-2.5 px-4 rounded transition <?= $currentController == 'dashboard' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
                     Dashboard
                 </a>
-                <a href="<?=path("client","liste")?>" 
-                   class="block py-2.5 px-4 rounded transition <?= $currentController == 'client' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
-                    Clients
-                </a>
-                <a href="<?=path("produit","liste")?>" 
-                   class="block py-2.5 px-4 rounded transition <?= $currentController == 'produit' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
-                    Produits
-                </a>
+
+                <!--  Cache les boutons "Clients" et "Produits" pour le simple CLIENT -->
+                <?php if (hasRole('ADMIN')): ?>
+                    <a href="<?=path("client","liste")?>" 
+                       class="block py-2.5 px-4 rounded transition <?= $currentController == 'client' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
+                        Clients
+                    </a>
+                    <a href="<?=path("produit","liste")?>" 
+                       class="block py-2.5 px-4 rounded transition <?= $currentController == 'produit' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
+                        Produits
+                    </a>
+                <?php endif; ?>
+
+                <!-- Tout le monde (Admin et Client) peut voir ses commandes -->
                 <a href="<?=path("commande","liste")?>" 
                    class="block py-2.5 px-4 rounded transition <?= $currentController == 'commande' ? 'bg-indigo-700' : 'hover:bg-indigo-800' ?>">
                     Commandes

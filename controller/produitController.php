@@ -2,6 +2,12 @@
 require_once ROOT."/model/produitModel.php";
 require_once ROOT."/config/validator.php";
 
+auth();
+// Sécurité de rôle Si ce n'est PAS un admin, on lui refuse l'accès
+if (!hasRole('ADMIN')) {
+    redirectTo("dashboard", "index");
+}
+
 $liste = function(){
     $produits = listerProduit();
     $total_produits = countTable("produit");

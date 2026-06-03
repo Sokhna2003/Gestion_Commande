@@ -22,7 +22,13 @@ $login = function(){
             $user=login($_POST["email"]);
             // dd($user);
             if ($user && $_POST["password"] == $user["mdp"]) {
-                $_SESSION["user"]=$user;
+                $_SESSION["user"]=[
+                    "id_utilisateur" => $user["id_utilisateur"],
+                    "id_client"      => $user["id_utilisateur"], // On duplique l'ID pour que le modèle commande trouve une correspondance
+                    "nom"            => $user["nom"],
+                    "prenom"         => $user["prenom"],
+                    "role"           => $user["role"]
+                ];
                 redirectTo("dashboard","index");
             }else{
                 $errors["global"]="email ou mot de passe incorrect";

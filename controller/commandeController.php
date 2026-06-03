@@ -1,7 +1,7 @@
 <?php
 // session_start();
 require_once ROOT."/model/commandeModel.php";
-
+auth();
 if(!isset($_SESSION["commande"])){
     $_SESSION["commande"] = [
         "client"  => null,
@@ -11,15 +11,52 @@ if(!isset($_SESSION["commande"])){
 }
 
 $liste = function(){
+    if (hasRole('ADMIN')) {
+    // L'admin voit toutes les commandes du système
     $commandes = getAllCommandes();
     $total_commandes = countTable("commande");
+    } else {
+        // Le client ne voit que ses propres commandes (On récupère l'id_client stocké dans la session de l'utilisateur connecté)
+        $id_client_connecte = $_SESSION["user"]["id_client"] ?? null;
+        
+        if ($id_client_connecte === null) {
+            $commandes = [];
+        } else {
+            // Le client charge UNIQUEMENT ses commandes
+            $commandes = getCommandesByClientId($id_client_connecte); 
+        }
+        $total_commandes = count($commandes);   
+    }
     loadView("commande/liste", [
         "commandes"        => $commandes,
         "total_commandes"  => $total_commandes
     ]);
 };
 
+// Consulter le détail d'une commande (Accessible par Admin et Client)
+$detail = function(){
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    if ($id <= 0) {
+        redirectTo("commande", "liste");
+    }
+    $commande = getCommandeById($id); // À avoir dans votre modèle
+    if (!$commande) {
+        redirectTo("commande", "liste");
+    }
+    // SÉCURITÉ CLIENT : Un client ne peut pas regarder la commande d'un autre en changeant l'ID dans l'URL
+    if (!hasRole('ADMIN')) {
+        $id_client_connecte = $_SESSION["user"]["id_utilisateur"] ?? $_SESSION["user"]["id"];
+        if ($commande["id_client"] != $id_client_connecte) {
+            redirectTo("commande", "liste"); // Rejet immédiat s'il triche
+        }
+    }
+
+    loadView("commande/detail", ["commande" => $commande]);
+};
+
 $ajout = function(){
+    // SÉCURITÉ RÔLE : Interdit aux clients simples
+    if (!hasRole('ADMIN')) { redirectTo("dashboard", "index"); }
     $client       = $_SESSION["commande"]["client"];
     $produit      = $_SESSION["commande"]["produit"];
     $panier       = $_SESSION["commande"]["panier"];
@@ -48,6 +85,7 @@ $ajout = function(){
 };
 
 $rechercherClient = function(){
+    if (!hasRole('ADMIN')) { redirectTo("dashboard", "index"); }
     $tel = trim($_POST["tel_client"] ?? "");
 
     if($tel === ""){
@@ -72,6 +110,7 @@ $rechercherClient = function(){
 };
 
 $rechercherProduit = function(){
+    if (!hasRole('ADMIN')) { redirectTo("dashboard", "index"); }
     $ref = trim($_POST["ref_produit"] ?? "");
 
     if($ref === ""){
@@ -92,6 +131,7 @@ $rechercherProduit = function(){
 };
 
 $ajouterAuPanier = function(){
+    if (!hasRole('ADMIN')) { redirectTo("dashboard", "index"); }
     $produit = $_SESSION["commande"]["produit"];
     $qteStr  = trim($_POST["qte_commande"] ?? "");
 
@@ -157,6 +197,7 @@ $ajouterAuPanier = function(){
 };
 
 $retirerDuPanier = function(){
+    if (!hasRole('ADMIN')) { redirectTo("dashboard", "index"); }
     $index = $_POST["index"] ?? null;
 
     if($index !== null && isset($_SESSION["commande"]["panier"][$index])){
@@ -167,6 +208,7 @@ $retirerDuPanier = function(){
 };
 
 $enregistrer = function(){
+    if (!hasRole('ADMIN')) { redirectTo("dashboard", "index"); }
     $client  = $_SESSION["commande"]["client"];
     $panier  = $_SESSION["commande"]["panier"];
     $description = trim($_POST["description"] ?? "");
@@ -195,6 +237,7 @@ $enregistrer = function(){
 
 $actions = [
     "liste"            => $liste,
+    "detail"           => $detail,
     "ajout"            => $ajout,
     "rechercherClient" => $rechercherClient,
     "rechercherProduit"=> $rechercherProduit,
